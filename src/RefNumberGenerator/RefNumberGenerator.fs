@@ -44,6 +44,12 @@ module GenerationOptions =
             Length = lengthValue
         }
 
+    let useDefault = {
+        UseNumbers = false
+        UseSpecialCharacters = false
+        Length = rand.Next(Constants.MinimumAutoLength, Constants.MaximumAutoLength)
+    }
+
 let private buildPool options =
     let pool =
         match (options.UseNumbers, options.UseSpecialCharacters) with
@@ -58,8 +64,8 @@ let generate options =
     let opt =
         match options with
         | Some value -> value
-        | None -> GenerationOptions.create None None None
+        | None -> GenerationOptions.useDefault
 
     let pool = buildPool opt
-    let output = [ for _ in 1 .. opt.Length -> pool.[rand.Next(pool.Length)] ]
+    let output = List.init opt.Length (fun _ -> pool.[rand.Next(pool.Length)])
     String.Concat(output)
