@@ -1,0 +1,8 @@
+root = true
+
+[*.fs]
+fsharp_multi_line_lambda_closing_newline = true
+fsharp_multiline_bracket_style = stroustrup
+
+[*.{yml,yaml}]
+indent_size = 2
