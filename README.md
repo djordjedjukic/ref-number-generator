@@ -8,13 +8,14 @@ This is a library for generation reference numbers.
 Using with default options
 
 ```csharp
-generate None
+let resultWithoutOptions = generate None
 ```
 
 Using with custom options
 
 ```csharp
-let options = GenerationOptions.create (Some true) None (Some 10)
-generate (Some options)
+let options = { UseNumbers = true; UseSpecialCharacters = false; Length = 10 }
+let resultWithOptions = generate (Some options)
+
 ```
 
