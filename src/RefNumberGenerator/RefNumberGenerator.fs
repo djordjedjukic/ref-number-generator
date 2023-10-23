@@ -4,7 +4,7 @@ open System
 
 let rand = Random()
 
-let bigs = [| 'A' .. 'Y' |]
+let bigs = [| 'A' .. 'Z' |]
 let smalls = [| 'a' .. 'z' |]
 let numbers = [| '0' .. '9' |]
 let specials = [| '_'; '-' |]
@@ -22,32 +22,12 @@ type GenerationOptions = {
 }
 
 module GenerationOptions =
-    let create useNumbers useSpecialCharacters length =
-        let useNumbersValue =
-            match useNumbers with
-            | Some value -> value
-            | None -> false
-
-        let useSpecialCharactersValue =
-            match useSpecialCharacters with
-            | Some value -> value
-            | None -> false
-
-        let lengthValue =
-            match length with
-            | Some value -> value
-            | None -> rand.Next(Constants.MinimumAutoLength, Constants.MaximumAutoLength)
-
-        {
-            UseNumbers = useNumbersValue
-            UseSpecialCharacters = useSpecialCharactersValue
-            Length = lengthValue
-        }
-
-    let useDefault = {
-        UseNumbers = false
-        UseSpecialCharacters = false
-        Length = rand.Next(Constants.MinimumAutoLength, Constants.MaximumAutoLength)
+    let create useNumbers useSpecialCharacters length = {
+        UseNumbers = useNumbers |> Option.defaultValue false
+        UseSpecialCharacters = useSpecialCharacters |> Option.defaultValue false
+        Length =
+            length
+            |> Option.defaultValue (rand.Next(Constants.MinimumAutoLength, Constants.MaximumAutoLength))
     }
 
 let private buildPool options =
@@ -64,7 +44,7 @@ let generate options =
     let opt =
         match options with
         | Some value -> value
-        | None -> GenerationOptions.useDefault
+        | None -> GenerationOptions.create None None
 
     let pool = buildPool opt
     let output = List.init opt.Length (fun _ -> pool.[rand.Next(pool.Length)])
