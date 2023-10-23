@@ -8,7 +8,7 @@ let bigs = [| 'A' .. 'Z' |]
 let smalls = [| 'a' .. 'z' |]
 let numbers = [| '0' .. '9' |]
 let specials = [| '_'; '-' |]
-let basePool = bigs |> Array.append smalls
+let basePool = Array.append bigs smalls
 
 module Constants =
     let MinimumAutoLength = 8
@@ -21,15 +21,6 @@ type GenerationOptions = {
     Length: int
 }
 
-module GenerationOptions =
-    let create useNumbers useSpecialCharacters length = {
-        UseNumbers = useNumbers |> Option.defaultValue false
-        UseSpecialCharacters = useSpecialCharacters |> Option.defaultValue false
-        Length =
-            length
-            |> Option.defaultValue (rand.Next(Constants.MinimumAutoLength, Constants.MaximumAutoLength))
-    }
-
 let private buildPool options =
     let pool =
         match (options.UseNumbers, options.UseSpecialCharacters) with
@@ -40,12 +31,19 @@ let private buildPool options =
 
     pool |> String.Concat
 
-let generate options =
+let generate (options: GenerationOptions option) =
+    let defaultOptions = {
+        UseNumbers = false
+        UseSpecialCharacters = false
+        Length = rand.Next(Constants.MinimumAutoLength, Constants.MaximumAutoLength)
+    }
+
     let opt =
         match options with
-        | Some value -> value
-        | None -> GenerationOptions.create None None
+        | Some opts -> opts
+        | None -> defaultOptions
 
     let pool = buildPool opt
     let output = List.init opt.Length (fun _ -> pool.[rand.Next(pool.Length)])
+
     String.Concat(output)
