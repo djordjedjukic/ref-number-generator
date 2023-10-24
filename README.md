@@ -17,9 +17,9 @@ Using with custom options
 
 ```csharp
 let options = {
-    UseNumbers = true;
-    UseSpecialCharacters = true;
-    Length = 10;
+    UseNumbers = true
+    UseSpecialCharacters = true
+    Length = 10
 }
 
 let ref1 = let generate options
@@ -31,9 +31,9 @@ Configure once
 
 ```csharp
 let options = {
-    UseNumbers = true;
-    UseSpecialCharacters = true;
-    Length = 10;
+    UseNumbers = true
+    UseSpecialCharacters = true
+    Length = 10
 }
 
 let generateNext () = generate options
