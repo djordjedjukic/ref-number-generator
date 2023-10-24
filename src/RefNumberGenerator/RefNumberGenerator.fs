@@ -15,11 +15,18 @@ module Constants =
     let MaximumAutoLength = 14
     let MinimumCharacterSetLength = 50
 
-type GenerationOptions = {
+type Configuration = {
     UseNumbers: bool
     UseSpecialCharacters: bool
     Length: int
 }
+
+module Configuration =
+    let useDefault = {
+        UseNumbers = false
+        UseSpecialCharacters = false
+        Length = rand.Next(Constants.MinimumAutoLength, Constants.MaximumAutoLength)
+    }
 
 let private buildPool options =
     let pool =
@@ -31,19 +38,8 @@ let private buildPool options =
 
     pool |> String.Concat
 
-let generate (options: GenerationOptions option) =
-    let defaultOptions = {
-        UseNumbers = false
-        UseSpecialCharacters = false
-        Length = rand.Next(Constants.MinimumAutoLength, Constants.MaximumAutoLength)
-    }
+let generate (config: Configuration) =
 
-    let opt =
-        match options with
-        | Some opts -> opts
-        | None -> defaultOptions
-
-    let pool = buildPool opt
-    let output = List.init opt.Length (fun _ -> pool.[rand.Next(pool.Length)])
-
+    let pool = buildPool config
+    let output = List.init config.Length (fun _ -> pool.[rand.Next(pool.Length)])
     String.Concat(output)
