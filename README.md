@@ -8,9 +8,9 @@ This is a library for generation reference numbers.
 Using with default options
 
 ```csharp
-let ref1 = let generate Configuration.useDefault
-let ref2 = let generate Configuration.useDefault
-let ref3 = let generate Configuration.useDefault
+let ref1 = generate Configuration.useDefault
+let ref2 = generate Configuration.useDefault
+let ref3 = generate Configuration.useDefault
 ```
 
 Using with custom options
@@ -22,9 +22,9 @@ let options = {
     Length = 10
 }
 
-let ref1 = let generate options
-let ref2 = let generate options
-let ref3 = let generate options
+let ref1 = generate options
+let ref2 = generate options
+let ref3 = generate options
 ```
 
 Configure once
